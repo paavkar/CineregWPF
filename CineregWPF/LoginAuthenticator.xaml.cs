@@ -33,24 +33,31 @@ namespace CineregWPF
             HttpClient httpClient = new();
             Login loginWindow = (Login)Window.GetWindow(this);
 
-            var result = await httpClient.PostAsJsonAsync("https://cinereg-pk.azurewebsites.net/login", new { Email, Password, TwoFactorCode = authenticatorBox.Text }, options);
-
-            if (result.IsSuccessStatusCode)
+            try
             {
-                TokenResponse tokenResponse = await result.Content.ReadFromJsonAsync<TokenResponse>();
+                var result = await httpClient.PostAsJsonAsync("https://cinereg-pk.azurewebsites.net/login", new { Email, Password, TwoFactorCode = authenticatorBox.Text }, options);
 
-                MainWindow main = new(tokenResponse);
-                loginWindow.Close();
-                main.Show();
+                if (result.IsSuccessStatusCode)
+                {
+                    TokenResponse tokenResponse = await result.Content.ReadFromJsonAsync<TokenResponse>();
+
+                    MainWindow main = new(tokenResponse);
+                    loginWindow.Close();
+                    main.Show();
+                    return;
+                }
+
+                var error = await result.Content.ReadFromJsonAsync<Error>();
+
+                if (error.Detail == "RequiresTwoFactor") errorText.Text = "Entering your authenticator code is required.";
+                else errorText.Text = "Authenticator code was incorrect.";
+
                 return;
             }
-
-            var error = await result.Content.ReadFromJsonAsync<Error>();
-
-            if (error.Detail == "RequiresTwoFactor") errorText.Text = "Entering your authenticator code is required.";
-            else errorText.Text = "Authenticator code was incorrect.";
-
-            return;
+            catch (Exception ex)
+            {
+                errorText.Text = "Unexpected error occurred.";
+            }
         }
 
         private void NumericOnly(System.Object sender, System.Windows.Input.TextCompositionEventArgs e)

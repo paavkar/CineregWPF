@@ -28,25 +28,32 @@ namespace CineregWPF
             HttpClient httpClient = new();
             Login loginWindow = (Login)Window.GetWindow(this);
 
-            var result = await httpClient.PostAsJsonAsync("https://cinereg-pk.azurewebsites.net/login", new { Email = emailBox.Text, Password = passwordBox.Password }, options);
-
-            if (result.IsSuccessStatusCode)
+            try
             {
-                TokenResponse tokenResponse = await result.Content.ReadFromJsonAsync<TokenResponse>();
+                var result = await httpClient.PostAsJsonAsync("https://cinereg-pk.azurewebsites.net/login", new { Email = emailBox.Text, Password = passwordBox.Password }, options);
 
-                MainWindow main = new(tokenResponse);
-                loginWindow.Close();
-                main.Show();
+                if (result.IsSuccessStatusCode)
+                {
+                    TokenResponse tokenResponse = await result.Content.ReadFromJsonAsync<TokenResponse>();
+
+                    MainWindow main = new(tokenResponse);
+                    loginWindow.Close();
+                    main.Show();
+                    return;
+                }
+
+                var error = await result.Content.ReadFromJsonAsync<Error>();
+
+                if (error.Detail == "RequiresTwoFactor") loginWindow.loginFrame.Navigate(new LoginAuthenticator(emailBox.Text, passwordBox.Password));
+
+                else errorText.Text = "Incorrect email or password.";
+
                 return;
             }
-
-            var error = await result.Content.ReadFromJsonAsync<Error>();
-
-            if (error.Detail == "RequiresTwoFactor") loginWindow.loginFrame.Navigate(new LoginAuthenticator(emailBox.Text, passwordBox.Password));
-
-            else errorText.Text = "Incorrect email or password.";
-
-            return;
+            catch (Exception ex)
+            {
+                errorText.Text = "Unexpected error occurred.";
+            }
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
