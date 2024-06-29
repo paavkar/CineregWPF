@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="Cinereg" Height="720" Width="1280">
     <Grid>
-        <Frame x:Name="mainFrame" NavigationUIVisibility="Hidden" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="6*" />
+        </Grid.ColumnDefinitions>
+        
+        <Frame Grid.Column="1" x:Name="mainFrame" NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>
