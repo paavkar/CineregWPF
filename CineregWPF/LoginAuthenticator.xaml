@@ -3,10 +3,10 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:local="clr-namespace:CineregWPF"
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="500"
-      Title="LoginAuthenticator">
+      d:DesignHeight="600" d:DesignWidth="500">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -18,74 +18,28 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0">
-            <TextBlock HorizontalAlignment="Center" Text="Two-factor authentication" FontSize="30" Margin="0 10 0 0" />
-            <TextBlock FontSize="16" Margin="45 20 0 0">
+            <ui:TextBlock HorizontalAlignment="Center" Text="Two-factor authentication" FontSize="30" Margin="0 40 0 0" Foreground="White" />
+            <ui:TextBlock FontSize="16" Margin="45 20 0 0" Foreground="White">
                 Your login is protected with an authenticator app.<LineBreak /> Enter your authenticator code below.
-            </TextBlock>
+            </ui:TextBlock>
 
-            <TextBlock x:Name="errorText" Foreground="Red" FontSize="16" HorizontalAlignment="Left" Margin="45 0 0 0" />
+            <ui:TextBlock x:Name="errorText" Foreground="Red" FontSize="16" HorizontalAlignment="Left" Margin="45 0 0 0" />
 
             <Label Width="400" Target="{Binding ElementName=authenticatorBox}" Content="Authenticator code" FontSize="18" />
-            <TextBox x:Name="authenticatorBox" Width="200" Height="30" FontSize="16" PreviewTextInput="NumericOnly" HorizontalAlignment="Left" Margin="45 0 0 0" InputScope="Number">
-                <TextBox.Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Setter Property="SnapsToDevicePixels"
-                                Value="True" />
-                        <Setter Property="OverridesDefaultStyle"
-                                Value="True" />
-                        <Setter Property="KeyboardNavigation.TabNavigation"
-                                Value="None" />
-                        <Setter Property="FocusVisualStyle"
-                                Value="{x:Null}" />
-                        <Setter Property="MinWidth"
-                                Value="120" />
-                        <Setter Property="MinHeight"
-                                Value="20" />
-                        <Setter Property="AllowDrop"
-                                Value="true" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type TextBoxBase}">
-                                    <Border Name="Border"
-                                            CornerRadius="4"
-                                            Padding="2"
-                                            BorderThickness="1">
-                                        <Border.Background>
-                                            <SolidColorBrush Color="LightGray" />
-                                        </Border.Background>
-                                        <Border.BorderBrush>
-                                            <SolidColorBrush Color="LightGray" />
-                                        </Border.BorderBrush>
-                                        <ScrollViewer Margin="0"
-                                          x:Name="PART_ContentHost" />
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
+            <ui:NumberBox Icon="NumberSymbol20" x:Name="authenticatorBox" 
+                          Width="200"
+                          FontSize="20" 
+                          HorizontalAlignment="Left" 
+                          Margin="45 0 0 0" />
 
-            <Button Click="Button_Click" Content="Log in" Margin="0, 30, 0, 0"
-                    FontSize="20"
-                    FontWeight="Medium"
-                    Width="100">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Cursor" Value="Hand" />
-                    </Style>
-                </Button.Style>
-
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border Width="100" Height="40" 
-                                CornerRadius="12"
-                                Background="{TemplateBinding Background}">
-                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+            <ui:Button Click="Button_Click" 
+                       Content="Log in"
+                       Margin="200 40 0 0"
+                       FontSize="20"
+                       FontWeight="Medium"
+                       Width="100"
+                       Height="40"
+                       Cursor="Hand"/>
         </StackPanel>
     </Grid>
 </Page>

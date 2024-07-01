@@ -41,7 +41,7 @@ namespace CineregWPF
                 {
                     TokenResponse tokenResponse = await result.Content.ReadFromJsonAsync<TokenResponse>();
 
-                    MainWindow main = new(tokenResponse);
+                    MainWindow main = new(tokenResponse!);
                     loginWindow.Close();
                     main.Show();
                     return;
@@ -49,7 +49,7 @@ namespace CineregWPF
 
                 var error = await result.Content.ReadFromJsonAsync<Error>();
 
-                if (error.Detail == "RequiresTwoFactor") errorText.Text = "Entering your authenticator code is required.";
+                if (error!.Detail == "RequiresTwoFactor") errorText.Text = "Entering your authenticator code is required.";
                 else errorText.Text = "Authenticator code was incorrect.";
 
                 return;
@@ -69,7 +69,6 @@ namespace CineregWPF
         {
             System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex("[^0-9]");
             return reg.IsMatch(str);
-
         }
     }
 }

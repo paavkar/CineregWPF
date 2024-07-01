@@ -1,11 +1,11 @@
-﻿using System.Windows;
+﻿using Wpf.Ui.Controls;
 
 namespace CineregWPF
 {
     /// <summary>
     /// Interaction logic for Login.xaml
     /// </summary>
-    public partial class Login : Window
+    public partial class Login : FluentWindow
     {
         public Login()
         {

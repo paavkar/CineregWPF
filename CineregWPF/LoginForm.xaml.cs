@@ -36,7 +36,7 @@ namespace CineregWPF
                 {
                     TokenResponse tokenResponse = await result.Content.ReadFromJsonAsync<TokenResponse>();
 
-                    MainWindow main = new(tokenResponse);
+                    MainWindow main = new(tokenResponse!);
                     loginWindow.Close();
                     main.Show();
                     return;
@@ -44,7 +44,7 @@ namespace CineregWPF
 
                 var error = await result.Content.ReadFromJsonAsync<Error>();
 
-                if (error.Detail == "RequiresTwoFactor") loginWindow.loginFrame.Navigate(new LoginAuthenticator(emailBox.Text, passwordBox.Password));
+                if (error!.Detail == "RequiresTwoFactor") loginWindow.loginFrame.Navigate(new LoginAuthenticator(emailBox.Text, passwordBox.Password));
 
                 else errorText.Text = "Incorrect email or password.";
 

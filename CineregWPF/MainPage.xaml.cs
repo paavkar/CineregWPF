@@ -12,8 +12,7 @@ namespace CineregWPF
     /// </summary>
     public partial class MainPage : Page
     {
-        private TokenResponse _tokenResponse;
-
+        private TokenResponse TokenResponse;
 
         JsonSerializerOptions Options = new()
         {
@@ -24,16 +23,15 @@ namespace CineregWPF
         public MainPage(TokenResponse tokenResponse)
         {
             InitializeComponent();
-            _tokenResponse = tokenResponse;
+            TokenResponse = tokenResponse;
             Loaded += OnLoaded;
         }
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             HttpClient httpClient = new();
-            MainWindow mainWindow = (MainWindow)Window.GetWindow(this);
 
-            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_tokenResponse.AccessToken}");
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {TokenResponse.AccessToken}");
             var result = await httpClient.GetAsync("https://cinereg-pk.azurewebsites.net/api/Movies");
 
             if (result.IsSuccessStatusCode)
@@ -44,9 +42,11 @@ namespace CineregWPF
             }
         }
 
-        private async void AddMovieButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void AddMovieButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            MainWindow mainWindow = (MainWindow)Window.GetWindow(this);
 
+            mainWindow.mainFrame.Navigate(new EditMovie(TokenResponse));
         }
     }
 }

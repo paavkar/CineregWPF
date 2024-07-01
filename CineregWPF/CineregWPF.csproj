@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240607001" />
+    <PackageReference Include="WPF-UI" Version="3.0.4" />
   </ItemGroup>
 
 </Project>
