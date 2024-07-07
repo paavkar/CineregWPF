@@ -29,6 +29,16 @@ namespace CineregWPF
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
+            await FetchMovies();
+        }
+
+        private async void RefreshButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            await FetchMovies();
+        }
+
+        private async Task FetchMovies()
+        {
             HttpClient httpClient = new();
 
             httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {TokenResponse.AccessToken}");
@@ -42,11 +52,12 @@ namespace CineregWPF
             }
         }
 
-        private void AddMovieButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private async void AddMovieButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             MainWindow mainWindow = (MainWindow)Window.GetWindow(this);
 
-            mainWindow.mainFrame.Navigate(new EditMovie(TokenResponse));
+            EditMovieWindow editMovieWindow = new(TokenResponse);
+            editMovieWindow.ShowDialog();
         }
     }
 }

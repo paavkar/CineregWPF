@@ -20,6 +20,14 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Grid.Row="0">
+
+            <ui:Button Click="RefreshButton_Click" 
+           Grid.Row="1" Grid.Column="0" 
+           Width="120" Height="34" 
+           HorizontalAlignment="Left" 
+           Margin="10 10 0 0" 
+           Content="Refresh"
+           Cursor="Hand"/>
             <ui:DataGrid CanUserAddRows="False" x:Name="movieEntries" Height="500" Margin="10 10 80 10" 
                          AutoGenerateColumns="False" 
                          IsReadOnly="True" 

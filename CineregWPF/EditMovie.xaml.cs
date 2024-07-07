@@ -39,10 +39,36 @@ namespace CineregWPF
 
                 else
                 {
-                    MainWindow mainWindow = (MainWindow)Window.GetWindow(this);
+                    EditMovieWindow editMovieWindow = (EditMovieWindow)Window.GetWindow(this);
 
-                    mainWindow.mainFrame.Navigate(new MainPage(TokenResponse));
+                    editMovieWindow.Close();
                 }
+            }
+        }
+
+        private async void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Movie movie = new()
+            {
+                Name = movieTitleBox.Text,
+                Genre = movieGenreBox.Text,
+                Director = movieDirectorBox.Text,
+                ReleaseYear = (int)movieReleaseYearBox.Value,
+                WatchedYear = (int)movieWatchedYearBox.Value,
+                ViewingForm = movieFormatBox.Text,
+                Review = movieReviewBox.SelectedValue.ToString()
+            };
+
+            HttpClient httpClient = new();
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {TokenResponse.AccessToken}");
+            var result = await httpClient.PostAsJsonAsync($"https://cinereg-pk.azurewebsites.net/api/Movies/", movie);
+
+            if (result.IsSuccessStatusCode)
+            {
+                EditMovieWindow editMovieWindow = (EditMovieWindow)Window.GetWindow(this);
+
+                editMovieWindow.Close();
             }
         }
     }
